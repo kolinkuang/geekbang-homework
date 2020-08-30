@@ -3,11 +3,11 @@ package l014;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DefaultApiAuthenticatorImpl implements ApiAuthenticator {
+public class DefaultApiAuthenticator implements ApiAuthenticator {
 
     private final CredentialStorage credentialStorage;
 
-    public DefaultApiAuthenticatorImpl() {
+    public DefaultApiAuthenticator() {
         this.credentialStorage = new MysqlCredentialStorage();
     }
 
@@ -40,6 +40,8 @@ public class DefaultApiAuthenticatorImpl implements ApiAuthenticator {
         }};
         AuthToken serverAuthToken = AuthToken.create(baseUrl, timestamp, params);
         if (!serverAuthToken.match(clientAuthToken)) {
+            System.out.println("Client: " + clientAuthToken.getToken());
+            System.out.println("Server: " + serverAuthToken.getToken());
             throw new RuntimeException("Token verification failed.");
         }
     }

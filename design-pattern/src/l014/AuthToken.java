@@ -1,6 +1,6 @@
 package l014;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 
@@ -23,16 +23,15 @@ public class AuthToken {
 //    }
 
     public static AuthToken create(String baseUrl, long createTime, Map<String, String> params){
-        String id = params.get("id");
         String appId = params.get("appId");
         String password = params.get("password");
-        String rawValue = String.format("%s?id=%s&appid=%s&pwd=%s&ts=%s", baseUrl, id, appId, password, createTime);
+        String rawValue = String.format("%s?appid=%s&pwd=%s&ts=%s", baseUrl, appId, password, createTime);
         return new AuthToken(generateToken(rawValue), createTime);
     }
 
     private static String generateToken(String rawValue) {
         byte[] encoded = Base64.getEncoder().encode(rawValue.getBytes());
-        return Arrays.toString(encoded);
+        return new String(encoded, StandardCharsets.UTF_8).replace("=", "");
     }
 
     public String getToken() {
@@ -44,7 +43,7 @@ public class AuthToken {
     }
 
     public boolean match(AuthToken authToken) {
-        return this.token.equals(authToken.getToken());
+        return this.getToken().equals(authToken.getToken());
     }
 
 }

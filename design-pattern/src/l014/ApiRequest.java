@@ -35,7 +35,7 @@ public class ApiRequest {
     }
 
     public static ApiRequest buildFromUrl(String url) {
-        String[] paths = url.split("/?");
+        String[] paths = url.split("\\?");
         String baseUrl = paths[0];
         Map<String, String> params = Arrays.stream(paths[1].split("&"))
                 .map(entry -> entry.split("="))
